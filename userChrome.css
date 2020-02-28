@@ -1,0 +1,217 @@
+
+@-moz-document url(chrome://browser/content/browser.xul),
+               url(chrome://browser/content/browser.xhtml)
+{
+
+
+#back-button{
+display: none;
+}
+
+#forward-button{
+display: none;
+}
+/* IMPORTANT */
+                 /*
+Get window_control_placeholder_support.css
+Window controls will be all wrong without it.
+Additionally on Linux, you may need to get:
+linux_gtk_window_control_patch.css
+*/
+/* Always show tab close button on hover and never otherwise */
+.tabbrowser-tab .tab-close-button{
+  display:none;
+}
+.tabbrowser-tab:not([pinned]):hover .tab-close-button{
+  display:-moz-box !important;
+}
+#pageActionSeparator{
+  margin-right:26px !important;
+}
+#stop-reload-button .toolbarbutton-icon{
+  border-radius: 0px !important;
+  padding: 4px 5px !important;
+}
+#stop-reload-button{
+display: none;
+}
+
+:root{
+  --uc-titlebar-padding: 0px; }
+:root[sizemode="maximized"][tabsintitlebar]{ --uc-titlebar-padding: 8px }
+
+.titlebar-buttonbox-container{
+  position: fixed;
+  display: block;
+  top: var(--uc-titlebar-padding,0px);
+  right:0;
+  height: 40px;
+}
+/* Mac specific. You should set that font-smoothing pref to true if you are on any platform where window controls are on left */
+@supports -moz-bool-pref("layout.css.osx-font-smoothing.enabled"){
+	:root{ --uc-titlebar-padding: 0px !important }
+	.titlebar-buttonbox-container{ left:0; right: unset; }
+}
+
+:root[uidensity="compact"] .titlebar-buttonbox-container{ height: 32px }
+
+#toolbar-menubar[inactive] > .titlebar-buttonbox-container{ opacity: 0 }
+
+#navigator-toolbox{ padding-top: var(--uc-titlebar-padding,0px) !important; }
+
+
+.titlebar-buttonbox-container > .titlebar-buttonbox{ height: 100%; }
+
+#titlebar{
+ -moz-box-ordinal-group: 2;
+  -moz-appearance: none;
+}
+
+.titlebar-placeholder,
+#TabsToolbar .titlebar-spacer{ display: none; }
+/* Also hide the toolbox bottom border which isn't at bottom with this setup */
+#navigator-toolbox::after{ display: none !important; }
+
+@media (-moz-gtk-csd-close-button){ .titlebar-button{ -moz-box-orient: vertical } }
+
+/* These exist only for compatibility with autohide-tabstoolbar.css */
+toolbox#navigator-toolbox > toolbar#nav-bar.browser-toolbar{ animation: none; }
+#navigator-toolbox:hover #TabsToolbar{ animation: slidein ease-out 48ms 1 }
+
+#titlebar{ -moz-appearance: none !important }
+:root[tabsintitlebar][sizemode="maximized"]{ padding-top: 8px !important; }
+#titlebar:hover > #toolbar-menubar[autohide="true"]{ height: calc(var(--tab-min-height) + var(--space-above-tabbar) - var(--tabs-navbar-shadow-size)) !important; }
+#titlebar:not(:hover) > #toolbar-menubar[autohide="true"][inactive] + #TabsToolbar{ visibility: collapse }
+
+/*■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ The janky download progress bar ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■*/
+/*-------------------------------------------- Icon appearance ---------------------------------------------*/
+#downloads-indicator-icon {
+transform: scale(1.2, 1.2) !important;
+margin-top: 1px !important;
+animation: alternate !important;
+opacity: 0.95 !important;}
+ 
+#downloads-button[attention="success"] #downloads-indicator-icon {fill:  !important;}
+/*----------------------------------------------------------------------------------------------------------*/
+ 
+ 
+/*---------------------------------------- Progress bar appearance -----------------------------------------*/
+#downloads-indicator-progress-inner {background: url("Inner.png") !important; border-radius: 3px;}
+#downloads-indicator-progress-outer {background: url("Outer.png") !important; border-radius: 3px;}
+#downloads-button[progress]  stack {
+margin-left: 10px !important;
+margin-right: 10px !important;
+transform: scale(1.8, 1) !important;}
+/*----------------------------------------------------------------------------------------------------------*/
+ 
+ 
+/*------------------------------------ Progress bar visibility handling ------------------------------------*/
+#downloads-indicator-progress-inner {visibility: hidden !important;}
+#downloads-indicator-progress-outer {visibility: hidden !important;}
+#downloads-button[progress] #downloads-indicator-icon {visibility: hidden !important;}
+#downloads-button[progress] #downloads-indicator-progress-inner {visibility: visible !important;}
+#downloads-button[progress] #downloads-indicator-progress-outer {visibility: visible !important;}
+/*----------------------------------------------------------------------------------------------------------*/
+ 
+ 
+/*
+Code below is optional, it makes it so after you click on the downloads
+button and there is nothing in queue, the button will disappear.
+Remove "/**" to activate it.
+ 
+ 
+/*---------------------------------- Hide downloads button after clicking ----------------------------------*/
+/**
+#downloads-button {display: none;}
+#downloads-button[open="true"] {display: initial !important;}
+#downloads-button[progress="true"] {display: initial !important;}
+#downloads-button[attention="success"] {display: initial !important;}
+/*----------------------------------------------------------------------------------------------------------*/
+ 
+ 
+/*
+Alternatively, you can use this code below (which i prefer) instead
+-it'll make it so when downloading is finished,
+the button will disappear.
+ 
+ 
+/*--------------------------- Hide downloads button after downloading is finished --------------------------*/
+/**
+#downloads-button {display: none;}
+#downloads-button[open="true"] {display: initial !important;}
+#downloads-button[progress="true"] {display: initial !important;}
+#downloads-button[attention="success"] {display: initial !important;}
+#downloads-button[attention="success"] {display: none !important;}
+/*----------------------------------------------------------------------------------------------------------*/
+/*■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■*/
+
+
+
+
+/* Curve the background tabs at the upper left and right corners
+   May not work on add-on themes. */
+.tabbrowser-tab {
+  border-radius: 10px 10px 0px 0px / 15px 15px 0px 0px !important;
+}
+/* Curve active tab and slightly overlap neighboring tabs */
+.tabbrowser-tab .tab-background[selected="true"] {
+  margin-left: -1px !important;
+  margin-right: -1px !important;
+  border-radius: 10px 10px 0px 0px / 15px 15px 0px 0px !important;
+}
+/* Shorten the tab line along the tops of tabs */
+.tab-line {
+  margin-left: 9px !important;
+  margin-right: 9px !important;
+}
+/* Shorten the vertical lines between background tabs */
+.tabbrowser-tab::before, .tabbrowser-tab::after {
+  margin-top: 9px !important;
+}
+
+/** "Light" Theme (Dark Text) **/
+
+/* Border the background tabs (10% gray) for greater visibility */
+#main-window:not([lwthemetextcolor="bright"]) .tabbrowser-tab:not([selected="true"]) {
+  border: 1px solid rgba(0,0,0,.1) !important;
+  border-bottom-color: transparent !important;
+  margin-right: -1px !important;
+}
+/* Remove short vertical lines between background tabs */
+#main-window:not([lwthemetextcolor="bright"]) .tabbrowser-tab::before, 
+#main-window:not([lwthemetextcolor="bright"]) .tabbrowser-tab::after {
+  border: none !important;
+}
+
+/* Replace this SAMPLE CONTENT with your own CSS */
+    /* * Do not remove the @namespace line -- it's required for correct functioning */
+    /* set default namespace to XUL */
+
+    /* Remove Edit menu (if you already use all the keyboard shortcuts) */
+
+    #helpMenu, #edit-menu { display: none !important; }
+
+    /* Remove Home button (never use it) */
+
+    #home-button { display: none; }
+
+    /* Remove Go button from address bar */
+
+    #go-button-stack, .search-go-button-stack { display: none !important; }
+
+    /*Remove magnifying glass button from search box*/
+
+    .search-go-button-stack { display: none !important; }
+
+    /* Eliminate the throbber and its annoying movement: */
+
+    #throbber-box { display: none !important; }
+
+    /* Show keyword input box when adding a bookmark */
+
+    #keywordRow { display: -moz-grid-line !important; }
+
+    /* Make the active tab wider */
+
+   
+}

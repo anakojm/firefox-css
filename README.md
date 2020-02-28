@@ -1,3 +1,7 @@
+## Picture :
+
+![alt text](https://i.ibb.co/j4HbSWW/Screen-Shot-2020-02-28-at-21-27-43.png)
+
 ## How to use custom user styles?
 
 Git clone this repo on your firefox profile, inside "chrome" directory, if not exists you will need create it.

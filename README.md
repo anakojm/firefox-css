@@ -1,6 +1,6 @@
 ## Picture :
 
-![alt text](https://i.ibb.co/j4HbSWW/Screen-Shot-2020-02-28-at-21-27-43.png)
+![picture](https://preview.redd.it/1breuh0p7qj41.png?width=1416&format=png&auto=webp&s=ac783c5ae00dfdf87c9d2ea0ee73ac24baafe8d7)
 
 ## How to use custom user styles?
 
